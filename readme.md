@@ -25,6 +25,14 @@ You will need the latest version of python and the pip package manager to comple
 
 ---
 
+## CI/CD
+
+The CI/CD pipeline was created using Github Actions. It uses Python3.8, Pip3 and runs on the latest stable version of Ubuntu. The pipeline is started on a push to master.
+
+Once it has pulled from master it installs the dependencies form requirements.txt and then it runs the tests in the tests directory.
+
+---
+
 ## Wireframes
 
 ### Customer Interface
