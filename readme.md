@@ -86,3 +86,24 @@ Orders will be ordered by order id. There will be a filtering option to filter b
 <!-- #### Customers -->
 <!-- This page will list all customers who have made accounts and allow the admin to send a password reset email to the customer. ??? -->
 <!-- ![](./docs/wireframes/) -->
+
+---
+
+## Database Schema
+
+- customer many or zero orders, orders one and only one customer
+
+- basket zero or one users, users one and only one basket
+
+- product many or zero orders, orders many or one product
+
+- category many or one product, product many or one category
+
+- basket many or zero products, products many or zero baskets
+
+- order_details one and only one order, orders one and only one order_details
+- order_details many or one product, product many or zero order_details
+
+![](./docs/db/schema.png)
+
+---
