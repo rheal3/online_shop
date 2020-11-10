@@ -107,3 +107,10 @@ Orders will be ordered by order id. There will be a filtering option to filter b
 ![](./docs/db/schema.png)
 
 ---
+
+## Swagger
+
+The swagger file shows the endpoints that will be used in the application. The endpoints include: shop, user, and orders.
+
+The swagger file is located at `.github/swagger.yml`. To view, it can be uploaded to https://editor.swagger.io/# or viewed in the terminal using the `less` or `cat` commands.
+
