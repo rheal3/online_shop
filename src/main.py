@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, jsonify
+from marshmallow.exceptions import ValidationError
 app = Flask(__name__)
 app.config.from_object("settings.app_config")
 
@@ -15,3 +16,7 @@ from controllers import registerable_controllers
 
 for controller in registerable_controllers:
     app.register_blueprint(controller)
+
+@app.errorhandler(ValidationError)
+def handle_bad_request(error):
+    return (jsonify(error.messages), 400)
