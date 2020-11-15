@@ -18,7 +18,7 @@ def item_create():
     new_item = Item()
     new_item.name = item_fields["name"]
     new_item.description = item_fields["description"]
-    new_item.price = item_fields["price"]
+    new_item.price = round(item_fields["price"], 2)
 
     db.session.add(new_item)
     db.session.commit()
