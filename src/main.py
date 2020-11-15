@@ -1,22 +1,28 @@
 from flask import Flask, jsonify
 from marshmallow.exceptions import ValidationError
-app = Flask(__name__)
-app.config.from_object("settings.app_config")
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 
-from database import init_db
-db = init_db(app)
+db = SQLAlchemy()
+ma = Marshmallow()
 
-from flask_marshmallow import Marshmallow 
-ma = Marshmallow(app)
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object("settings.app_config")
 
-from commands import db_commands
-app.register_blueprint(db_commands)
+    db.init_app(app)
+    ma.init_app(app)
 
-from controllers import registerable_controllers
+    from commands import db_commands
+    app.register_blueprint(db_commands)
 
-for controller in registerable_controllers:
-    app.register_blueprint(controller)
+    from controllers import registerable_controllers
 
-@app.errorhandler(ValidationError)
-def handle_bad_request(error):
-    return (jsonify(error.messages), 400)
+    for controller in registerable_controllers:
+        app.register_blueprint(controller)
+
+    @app.errorhandler(ValidationError)
+    def handle_bad_request(error):
+        return (jsonify(error.messages), 400)
+    
+    return app
