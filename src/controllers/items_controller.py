@@ -1,7 +1,8 @@
 from models.Item import Item
 from main import db
 from schemas.ItemSchema import item_schema, items_schema
-from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required
+from flask import Blueprint, request, jsonify, abort
 items = Blueprint('items', __name__, url_prefix="/shop")
 
 @items.route("/", methods=["GET"])
@@ -11,6 +12,7 @@ def item_index():
     return jsonify(items_schema.dump(items))
 
 @items.route("/", methods=["POST"])
+@jwt_required
 def item_create():
     # create new item
     item_fields = item_schema.load(request.json)
@@ -32,6 +34,7 @@ def item_show(id):
     return jsonify(item_schema.dump(item))
 
 @items.route("/<int:id>", methods=["PUT", "PATCH"])
+@jwt_required
 def item_update(id):
     # update single item
     items = Item.query.filter_by(id=id)
@@ -42,6 +45,7 @@ def item_update(id):
     return jsonify(item_schema.dump(items[0]))
 
 @items.route("/<int:id>", methods=["DELETE"])
+@jwt_required
 def item_delete(id):
     # delete single item
     item = Item.query.get(id)
