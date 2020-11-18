@@ -7,3 +7,6 @@ class Item(db.Model):
     name = db.Column(db.String())
     description = db.Column(db.String())
     price = db.Column(db.Float())
+
+    def __repr__(self):
+        return f"<Item: {self.id}>"

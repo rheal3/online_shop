@@ -1,7 +1,8 @@
 from models.Item import Item
+from models.User import User
 from main import db
 from schemas.ItemSchema import item_schema, items_schema
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import Blueprint, request, jsonify, abort
 items = Blueprint('items', __name__, url_prefix="/shop")
 
@@ -16,6 +17,11 @@ def item_index():
 def item_create():
     # create new item
     item_fields = item_schema.load(request.json)
+    
+    admin = User.query.get(get_jwt_identity())
+
+    if not admin.admin:
+        return abort(401, description="Invalid user action.")
 
     new_item = Item()
     new_item.name = item_fields["name"]
@@ -37,6 +43,11 @@ def item_show(id):
 @jwt_required
 def item_update(id):
     # update single item
+    admin = User.query.get(get_jwt_identity())
+
+    if not admin.admin:
+        return abort(401, description="Invalid user action.")
+
     items = Item.query.filter_by(id=id)
     item_fields = item_schema.load(request.json)
     items.update(item_fields)
@@ -48,6 +59,11 @@ def item_update(id):
 @jwt_required
 def item_delete(id):
     # delete single item
+    admin = User.query.get(get_jwt_identity())
+
+    if not admin.admin:
+        return abort(401, description="Invalid user action.")
+        
     item = Item.query.get(id)
 
     if not item:
