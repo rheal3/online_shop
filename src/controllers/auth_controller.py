@@ -19,6 +19,7 @@ def auth_register():
     user = User()
     user.email = user_fields["email"]
     user.password = bcrypt.generate_password_hash(user_fields["password"]).decode("utf-8")
+    user.admin = user_fields["admin"]
 
     db.session.add(user)
     db.session.commit()
