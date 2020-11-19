@@ -4,6 +4,7 @@ from main import db
 from schemas.ItemSchema import item_schema, items_schema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import Blueprint, request, jsonify, abort
+
 items = Blueprint('items', __name__, url_prefix="/shop")
 
 @items.route("/", methods=["GET"])
