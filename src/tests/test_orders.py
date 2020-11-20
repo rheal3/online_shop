@@ -21,8 +21,8 @@ class TestShop(unittest.TestCase):
         db.drop_all()
         cls.app_context.pop()
 
-    def test_shop_index(self):
-        response = self.client.get("/shop/")
+    def test_order_index(self):
+        response = self.client.get("/orders/")
 
         data = response.get_json()
 

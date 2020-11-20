@@ -29,11 +29,17 @@ class TestShop(unittest.TestCase):
         self.assertIsInstance(data, list)
 
     def test_item_create(self):
+        token = self.client.post("/auth/login", json={
+            "email": "admin@test.com",
+            "password": "123456",
+        }).get_json()["token"]
+
         response = self.client.post("/shop/", json={
             "name": "Test Item",
             "description": "Test Item Description",
             "price": 32.11
-        })
+        }, headers={"Authorization": f"Bearer {token}"})
+
 
         data = response.get_json()
         self.assertTrue(bool(response.status_code >= 200 and response.status_code < 300))
@@ -46,7 +52,12 @@ class TestShop(unittest.TestCase):
     def test_item_delete(self):
         item = Item.query.first()
 
-        response = self.client.delete(f"/shop/{item.id}")
+        token = self.client.post("/auth/login", json={
+            "email": "admin@test.com",
+            "password": "123456",
+        }).get_json()["token"]
+
+        response = self.client.delete(f"/shop/{item.id}", headers={"Authorization": f"Bearer {token}"})
         data = response.get_json()
 
         self.assertEqual(response.status_code, 200)
