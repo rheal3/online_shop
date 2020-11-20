@@ -19,33 +19,37 @@ def order_create():
     # create new order
     order_fields = order_schema.load(request.json) 
 
-    shipping = OrderShipping.query.get(orders)
+    shipping_id = request.args["shipping_id"]
+    shipping_id = OrderShipping.query.filter_by(id=shipping_id).first()
 
     new_order = Order()
     new_order.date_ordered = order_fields["date_ordered"]
     new_order.shipped = order_fields["shipped"]
 
-    db.session.add(new_order)
+    shipping_id.orders.append(new_order)
     db.session.commit()
 
     return jsonify(order_schema.dump(new_order))
-
-
-    # shipping_fields = orders_shipping_schema.load(request.json)
-    # shipping = OrderShipping()
-    # shipping.address = shipping_fields["address"]
-    # shippping.state = shipping_fields["state"]
-    # shipping.zip_code = shipping_fields["zip_code"]
-    # shipping.first_name = shipping_fields["first_name"]
-    # shipping.last_name = shipping_fields["last_name"]
-
-    # db.session.add(shipping)
-    # return jsonify(orders_shipping_schema(shipping))
-
-
 
 @orders.route("/<int:id>", methods=["GET"])
 def order_show(id):
     # return single order
     order = Order.query.get(id)
     return jsonify(order_schema.dump(order))
+
+@orders.route("/shipping", methods=["POST"])
+def shipping_create():
+    # create new shipping details
+    shipping_fields = order_shipping_schema.load(request.json) 
+
+    new_shipping = OrderShipping()
+    new_shipping.address = shipping_fields["address"]
+    new_shipping.state = shipping_fields["state"]
+    new_shipping.zip_code = shipping_fields["zip_code"]
+    new_shipping.first_name = shipping_fields["first_name"]
+    new_shipping.last_name = shipping_fields["last_name"]
+
+    db.session.add(new_shipping)    
+    db.session.commit()
+
+    return jsonify(order_shipping_schema.dump(new_shipping))

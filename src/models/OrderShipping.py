@@ -14,4 +14,4 @@ class OrderShipping(db.Model):
     last_name = db.Column(db.String(), nullable=False)
 
     def __repr__(self):
-        return f"<Shipping To: {self.firstname} {self.lastname}>"
+        return f"<Shipping To: {self.first_name} {self.last_name}>"
