@@ -53,3 +53,10 @@ def shipping_create():
     db.session.commit()
 
     return jsonify(order_shipping_schema.dump(new_shipping))
+
+@orders.route("/shipping", methods=["GET"])
+def shipping_index():
+    # return all shippping details
+    shipping = OrderShipping.query.all()
+    print(shipping)
+    return jsonify(orders_shipping_schema.dump(shipping))

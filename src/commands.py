@@ -21,8 +21,11 @@ def drop_db():
 def seed_db():
     from models.Item import Item
     from models.User import User
+    from models.Order import Order
+    from models.OrderShipping import OrderShipping
     from main import bcrypt
     from faker import Faker
+    import random
 
     faker = Faker()
 
@@ -48,4 +51,29 @@ def seed_db():
         db.session.add(item)
     
     db.session.commit()
+
+    ordershipping = []
+
+    for i in range(5):
+        shipping = OrderShipping()
+        shipping.first_name = faker.first_name()
+        shipping.last_name = faker.last_name()
+        shipping.address = faker.street_address()
+        shipping.state = faker.city()
+        shipping.zip_code = faker.postcode()
+        db.session.add(shipping)
+        ordershipping.append(shipping)
+    
+    db.session.commit()
+
+    orders = []
+
+    for i in range(5):
+        order = Order()
+        order.shipping_id = random.choice(ordershipping).id
+        db.session.add(order)
+        orders.append(order)
+
+    db.session.commit()
+
     print("Tables seeded.")

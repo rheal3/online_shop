@@ -12,4 +12,4 @@ class OrderShippingSchema(ma.SQLAlchemyAutoSchema):
     last_name = ma.String(required=True)
 
 order_shipping_schema = OrderShippingSchema()
-orders_shipping_schema = OrderShippingSchema()
+orders_shipping_schema = OrderShippingSchema(many=True)
