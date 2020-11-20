@@ -4,7 +4,7 @@ class OrderShipping(db.Model):
     __tablename__ = "ordershipping"
 
     id = db.Column(db.Integer, primary_key=True)
-    orders = db.relationship("Order", backref="orders")
+    orders = db.relationship("Order", backref="shipping")
    # user = db.relationship("User", backref="user")
     # user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     address = db.Column(db.String(), nullable=False)
