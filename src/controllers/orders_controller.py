@@ -11,7 +11,7 @@ orders = Blueprint("orders", __name__, url_prefix="/orders")
 @orders.route("/", methods=["GET"])
 def order_index():
     # return all orders
-    orders = (Order.query.all(), OrderShipping.query.all())
+    orders = Order.query.all() 
     return jsonify(orders_schema.dump(orders))
 
 @orders.route("/", methods=["POST"])
