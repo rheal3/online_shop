@@ -28,3 +28,41 @@ class TestShop(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(data, list)
+
+    def test_order_create(self):
+        shipping = self.client.post("/orders/shipping", json={
+            "address": "123 street",
+            "state": "QLD",
+            "zip_code": "1234",
+            "first_name": "Edward",
+            "last_name": "Scissorhands"
+        }).get_json()
+
+        response = self.client.post("/orders/?shipping_id=1", json={})
+
+        data = response.get_json()
+
+        self.assertTrue(bool(response.status_code >= 200 and response.status_code < 300))
+        self.assertIsInstance(data, dict)
+        self.assertTrue(bool("id" in data.keys()))
+        self.assertTrue(bool("date_ordered" in data.keys()))
+        self.assertTrue(bool("shipped" in data.keys()))
+
+        order = Order.query.get(data["id"])
+        self.assertIsNotNone(order)
+
+    def test_shipping_create(self):
+        response = self.client.post("/orders/shipping", json={
+            "address": "123 street",
+            "state": "QLD",
+            "zip_code": "1234",
+            "first_name": "Edward",
+            "last_name": "Scissorhands"
+        })
+
+        data = response.get_json()
+        self.assertTrue(bool(response.status_code >= 200 and response.status_code < 300))
+        self.assertIsInstance(data, dict)
+        self.assertTrue(bool("id" in data.keys()))
+        self.assertTrue(bool("address" in data.keys()))
+        self.assertTrue(bool("first_name" in data.keys()))
